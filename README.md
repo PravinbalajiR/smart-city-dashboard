@@ -1,6 +1,6 @@
 # Smart City Management System
 
-A complete Smart City Management System with a React + Vite frontend and an Express + Node.js backend mapped to a Supabase Postgres realtime database.
+A complete Smart City Management System with a React + Vite frontend and an Express + Node.js backend mapped to a Supabase Postgres realtime database....
 
 ## 📂 Folder Structure
 ```text
