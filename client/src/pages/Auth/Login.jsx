@@ -61,18 +61,18 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 text-white transition-all duration-500">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600 tracking-tight">
+        <h2 className="mt-6 text-center text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400 tracking-tight animate-fade-in">
           SmartCity
         </h2>
-        <p className="mt-2 text-center text-sm text-slate-600 font-medium">
+        <p className="mt-2 text-center text-sm text-slate-300 font-medium opacity-80">
           {isLogin ? 'Sign in to access your dashboard' : 'Create a citizen account'}
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-10 px-4 shadow-xl sm:rounded-3xl sm:px-10 border border-slate-100">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md animate-fade-in">
+        <div className="bg-white/10 backdrop-blur-xl py-10 px-4 shadow-2xl sm:rounded-3xl sm:px-10 border border-white/20">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
               <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl">
@@ -81,24 +81,24 @@ export default function Login() {
             )}
             
             <div>
-              <label className="block text-sm font-medium text-slate-700">Email address</label>
+              <label className="block text-sm font-medium text-slate-200">Email address</label>
               <div className="mt-2">
                 <input
                   type="email" required
                   value={email} onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full px-4 py-3 border border-slate-200 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent sm:text-sm transition-all bg-slate-50 focus:bg-white"
+                  className="appearance-none block w-full px-4 py-3 border border-white/10 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm transition-all bg-white/5 text-white focus:bg-white/10"
                   placeholder="hello@city.com"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700">Password</label>
+              <label className="block text-sm font-medium text-slate-200">Password</label>
               <div className="mt-2">
                 <input
                   type="password" required
                   value={password} onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full px-4 py-3 border border-slate-200 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent sm:text-sm transition-all bg-slate-50 focus:bg-white"
+                  className="appearance-none block w-full px-4 py-3 border border-white/10 rounded-xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm transition-all bg-white/5 text-white focus:bg-white/10"
                   placeholder="••••••••"
                 />
               </div>
@@ -120,8 +120,8 @@ export default function Login() {
           </form>
 
           <div className="mt-8">
-            <div className="p-4 bg-indigo-50 rounded-xl mb-6 border border-indigo-100">
-                <p className="text-sm text-indigo-800 font-medium text-center mb-3">
+            <div className="p-5 bg-blue-500/10 rounded-2xl mb-6 border border-blue-500/20 backdrop-blur-sm">
+                <p className="text-sm text-blue-300 font-bold text-center mb-4 uppercase tracking-wider">
                     Quick demo access
                 </p>
                 <div className="grid grid-cols-1 gap-2">
@@ -129,23 +129,23 @@ export default function Login() {
                     type="button"
                     onClick={() => handleDemoLogin('admin')}
                     disabled={loading}
-                    className="w-full py-2 px-3 rounded-lg text-sm font-semibold bg-slate-900 text-white hover:bg-black disabled:opacity-50"
+                    className="w-full py-2.5 px-3 rounded-lg text-sm font-bold bg-blue-600/20 text-blue-300 border border-blue-500/30 hover:bg-blue-600/40 transition-all active:scale-95 disabled:opacity-50"
                   >
-                    Demo Admin1
+                    Demo Admin Access
                   </button>
                   <button
                     type="button"
                     onClick={() => handleDemoLogin('user')}
                     disabled={loading}
-                    className="w-full py-2 px-3 rounded-lg text-sm font-semibold bg-white text-slate-900 border border-slate-300 hover:bg-slate-50 disabled:opacity-50"
+                    className="w-full py-2.5 px-3 rounded-lg text-sm font-bold bg-white/5 text-slate-200 border border-white/10 hover:bg-white/10 transition-all active:scale-95 disabled:opacity-50"
                   >
-                    Demo User1
+                    Demo Citizen Access
                   </button>
                 </div>
             </div>
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="w-full text-center text-sm text-indigo-600 hover:text-indigo-500 font-semibold transition-colors focus:outline-none"
+              className="w-full text-center text-sm text-blue-400 hover:text-blue-300 font-semibold transition-colors focus:outline-none"
             >
               {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
             </button>

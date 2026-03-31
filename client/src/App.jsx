@@ -30,12 +30,10 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             
-            <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-              <Route index element={<RoleBasedRedirect />} />
-              <Route path="dashboard" element={<ProtectedRoute requiredRole="user"><UserDashboard /></ProtectedRoute>} />
-              <Route path="dashboard/book" element={<ProtectedRoute requiredRole="user"><BookTicket /></ProtectedRoute>} />
-              <Route path="dashboard/map" element={<ProtectedRoute requiredRole="user"><div className="h-full pt-4 pb-12"><div className="font-extrabold text-3xl mb-4 text-slate-800">Live Infrastructure Map</div><CityMap /></div></ProtectedRoute>} />
-            </Route>
+            <Route path="/" element={<ProtectedRoute><RoleBasedRedirect /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<ProtectedRoute requiredRole="user"><UserDashboard /></ProtectedRoute>} />
+            <Route path="/dashboard/book" element={<ProtectedRoute requiredRole="user"><Layout><BookTicket /></Layout></ProtectedRoute>} />
+            <Route path="/dashboard/map" element={<ProtectedRoute requiredRole="user"><Layout><div className="h-full pt-4 pb-12"><div className="font-extrabold text-3xl mb-4 text-slate-800">Live Infrastructure Map</div><CityMap /></div></Layout></ProtectedRoute>} />
 
             <Route path="admin" element={<ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>} />
           </Routes>
