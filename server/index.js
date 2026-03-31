@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 require('dotenv').config();
-const supabase = require('./supabaseClient');
+const { supabase, supabaseAdmin } = require('./supabaseClient');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -10,6 +10,61 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+
+app.post('/api/auth/seed-demo-users', async (req, res) => {
+    const demoUsers = [
+        { email: 'admin1@example.com', password: 'admin1', role: 'admin' },
+        { email: 'admin2@example.com', password: 'admin2', role: 'admin' },
+        { email: 'user1@example.com', password: 'user1', role: 'user' },
+        { email: 'user2@example.com', password: 'user2', role: 'user' }
+    ];
+
+    try {
+        const seeded = [];
+
+        for (const demo of demoUsers) {
+            const { data: existingList, error: listError } = await supabaseAdmin.auth.admin.listUsers({
+                page: 1,
+                perPage: 1000
+            });
+
+            if (listError) throw listError;
+
+            let existingUser = existingList?.users?.find((u) => u.email === demo.email);
+
+            if (!existingUser) {
+                const { data: created, error: createError } = await supabaseAdmin.auth.admin.createUser({
+                    email: demo.email,
+                    password: demo.password,
+                    email_confirm: true
+                });
+                if (createError) throw createError;
+                existingUser = created.user;
+            } else {
+                const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(existingUser.id, {
+                    password: demo.password,
+                    email_confirm: true
+                });
+                if (updateError) throw updateError;
+            }
+
+            const { error: upsertError } = await supabaseAdmin
+                .from('users')
+                .upsert({ id: existingUser.id, email: demo.email, role: demo.role }, { onConflict: 'id' });
+
+            if (upsertError) throw upsertError;
+
+            seeded.push({ email: demo.email, role: demo.role });
+        }
+
+        res.json({ success: true, users: seeded });
+    } catch (err) {
+        res.status(500).json({
+            error: err.message,
+            hint: 'Set SUPABASE_SERVICE_ROLE_KEY in server/.env for admin operations.'
+        });
+    }
+});
 
 // Setup Routes
 app.get('/api/dashboard-data', async (req, res) => {

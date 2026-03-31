@@ -30,6 +30,36 @@ export default function Login() {
     }
   };
 
+  const handleDemoLogin = async (type) => {
+    setError('');
+    setLoading(true);
+
+    const creds =
+      type === 'admin'
+        ? { email: 'admin1@example.com', password: 'admin123' }
+        : { email: 'user1@example.com', password: 'user123' };
+
+    try {
+      // 1. Try to sign in normally
+      const { error: signInError } = await signIn(creds.email, creds.password);
+      
+      if (!signInError) return;
+
+      // 2. If sign in fails, try to sign up the demo user
+      // Note: This requires "Confirm Email" to be OFF in Supabase settings
+      const { error: signUpError } = await signUp(creds.email, creds.password);
+      
+      if (signUpError) throw signUpError;
+
+      // If sign up works, the user might need to click "Sign In" again if auto-confirm is off
+      setError('Demo account created! Please sign in again (ensure "Confirm Email" is disabled in Supabase).');
+    } catch (err) {
+      setError(err.message || 'Demo login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -91,12 +121,27 @@ export default function Login() {
 
           <div className="mt-8">
             <div className="p-4 bg-indigo-50 rounded-xl mb-6 border border-indigo-100">
-                <p className="text-sm text-indigo-800 font-medium text-center">
-                    <strong>Demo Mode Active:</strong><br/>
-                    Admin: <code>admin@demo.com</code><br/>
-                    User: <code>user@demo.com</code><br/>
-                    <span className="text-xs opacity-75">(Any password works)</span>
+                <p className="text-sm text-indigo-800 font-medium text-center mb-3">
+                    Quick demo access
                 </p>
+                <div className="grid grid-cols-1 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleDemoLogin('admin')}
+                    disabled={loading}
+                    className="w-full py-2 px-3 rounded-lg text-sm font-semibold bg-slate-900 text-white hover:bg-black disabled:opacity-50"
+                  >
+                    Demo Admin1
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDemoLogin('user')}
+                    disabled={loading}
+                    className="w-full py-2 px-3 rounded-lg text-sm font-semibold bg-white text-slate-900 border border-slate-300 hover:bg-slate-50 disabled:opacity-50"
+                  >
+                    Demo User1
+                  </button>
+                </div>
             </div>
             <button
               onClick={() => setIsLogin(!isLogin)}
