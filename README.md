@@ -12,7 +12,7 @@ smart-city-dashboard/
 │   │   ├── lib/            # Supabase client wrapper
 │   │   ├── pages/          # Login, UserDashboard, AdminDashboard, BookTicket
 │   │   └── App.jsx         # Routes & Protection Logic
-│   └── package.json
+│   └── package.jsonī
 ├── server/                 # Express backend
 │   ├── index.js            # API Endpoint routes
 │   ├── supabaseClient.js   # Supabase Admin init
